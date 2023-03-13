@@ -28,7 +28,7 @@ public class MainController {
     private TextField toYear;
 
     public void init() throws IOException, ParseException {
-        this.data =  (JSONArray) new JSONParser().parse(new FileReader("src/main/resources/data.json"));
+        this.data = (JSONArray) new JSONParser().parse(new FileReader("src/main/resources/data.json"));
     }
 
     @SuppressWarnings("unchecked")
@@ -39,32 +39,40 @@ public class MainController {
         int fromYearInt = 0;
         int toYearInt = 2023;
 
-        if(!"".equals(titleField.getText())){titleKeyWords = titleField.getText().split(",");}
-        if(!"".equals(abstractField.getText())){abstractKeyWords = abstractField.getText().split(",");}
-        if(!"".equals(fromYear.getText())){fromYearInt = Integer.parseInt(fromYear.getText());}
-        if(!"".equals(toYear.getText())){toYearInt = Integer.parseInt(toYear.getText());}
+        if (!"".equals(titleField.getText())) {
+            titleKeyWords = titleField.getText().split(",");
+        }
+        if (!"".equals(abstractField.getText())) {
+            abstractKeyWords = abstractField.getText().split(",");
+        }
+        if (!"".equals(fromYear.getText())) {
+            fromYearInt = Integer.parseInt(fromYear.getText());
+        }
+        if (!"".equals(toYear.getText())) {
+            toYearInt = Integer.parseInt(toYear.getText());
+        }
 
-        for(Object each : data){
+        for (Object each : data) {
             JSONObject paper = (JSONObject) each;
             int paperYear = Integer.parseInt(paper.get("year").toString());
 
             // if year is not invalid
-            if(!(paperYear>=fromYearInt && paperYear<=toYearInt)){
+            if (!(paperYear >= fromYearInt && paperYear <= toYearInt)) {
                 //Check Paper Year
                 continue;
             }
 
             // if title is not valid
-            if(titleKeyWords !=null && !Arrays.stream(titleKeyWords).allMatch(paper.get("title").toString()::contains)){
+            if (titleKeyWords != null && !Arrays.stream(titleKeyWords).map(String::toLowerCase).allMatch(paper.get("title").toString().toLowerCase()::contains)) {
                 continue;
             }
 
 
-            if(abstractKeyWords!=null && paper.get("abstract")==null){
+            if (abstractKeyWords != null && paper.get("abstract") == null) {
                 continue;
             }
             // if abstract is not valid
-            if(abstractKeyWords !=null && !Arrays.stream(abstractKeyWords).allMatch(paper.get("abstract").toString()::contains) ){
+            if (abstractKeyWords != null && !Arrays.stream(abstractKeyWords).map(String::toLowerCase).allMatch(paper.get("abstract").toString().toLowerCase()::contains)) {
                 continue;
             }
 
@@ -72,12 +80,11 @@ public class MainController {
         }
 
 
-
         //Write JSON file
         FileWriter file = new FileWriter("result.json");
         //We can write any JSONArray or JSONObject instance to the file
 
-        file.write(results.toJSONString().replaceAll("\\/",""));
+        file.write(results.toJSONString().replace("\\", ""));
         file.flush();
         file.close();
 
@@ -88,7 +95,7 @@ public class MainController {
         alert.showAndWait();
     }
 
-    public void clearAllField(){
+    public void clearAllField() {
         titleField.setText("");
         abstractField.setText("");
         fromYear.setText("");

@@ -25,8 +25,7 @@ tasks.withType(JavaCompile) {
 }
 
 application {
-    mainModule = 'com.example.acl_search'
-    mainClass = 'com.example.acl_search.HelloApplication'
+    mainClass = 'SearchApp'
 }
 
 javafx {
