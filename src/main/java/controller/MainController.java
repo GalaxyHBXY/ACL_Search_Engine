@@ -5,15 +5,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import view.MainView;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MainController {
@@ -62,11 +60,14 @@ public class MainController {
                 continue;
             }
 
+            if (titleKeyWords != null && paper.get("title") == null) {
+                continue;
+            }
+
             // if title is not valid
             if (titleKeyWords != null && !Arrays.stream(titleKeyWords).map(String::toLowerCase).allMatch(paper.get("title").toString().toLowerCase()::contains)) {
                 continue;
             }
-
 
             if (abstractKeyWords != null && paper.get("abstract") == null) {
                 continue;
@@ -79,18 +80,11 @@ public class MainController {
             results.add(paper);
         }
 
-
-        //Write JSON file
-        FileWriter file = new FileWriter("result.json");
-        //We can write any JSONArray or JSONObject instance to the file
-
-        file.write(results.toJSONString().replace("\\", ""));
-        file.flush();
-        file.close();
-
+        // output result to html
+        MainView.render(results);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Export Successfully");
-        alert.setContentText("The search Result has been exported successfully");
+        alert.setContentText("Search results are saved in 'result.html'");
         clearAllField();
         alert.showAndWait();
     }
@@ -101,6 +95,4 @@ public class MainController {
         fromYear.setText("");
         toYear.setText("");
     }
-
-
 }

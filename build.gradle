@@ -37,6 +37,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
     implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+    implementation 'org.thymeleaf:thymeleaf:3.1.1.RELEASE'
 }
 
 test {
@@ -53,4 +54,8 @@ jlink {
 
 jlinkZip {
     group = 'distribution'
+}
+
+task preprocess(type:Exec) {
+    commandLine 'python3', 'preprocess.py'
 }

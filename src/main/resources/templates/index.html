@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ACL Search Engine</title>
+    <link rel="stylesheet" href="src/main/resources/static/bootstrap.min.css">
+</head>
+<body>
+<div class="container-fluid">
+    <h3>Search Result</h3>
+    <p th:text="'Total Matching Results: ' + ${results.size()}"></p>
+    <ol class="list-group list-group-numbered">
+        <li th:each="paper : ${results}" class="list-group-item">
+            <p th:each="key : ${paper.keySet()}">
+                <span th:text="${key} + ': '" class="fw-bold"></span>
+                <span th:if="${key != 'url'}" th:text="${paper.get(key)}"></span>
+                <a th:unless="${key != 'url'}" th:text="${paper.get(key)}" th:href="${paper.get(key)}" target="_blank"></a>
+            </p>
+        </li>
+    </ol>
+</div>
+</body>
+</html>
