@@ -20,4 +20,5 @@ JSON Search - invoked by `gradle run`
 
 # Contact
 zewei.shi@sydney.edu.au
+
 yidong.gan@sydney.edu.au
